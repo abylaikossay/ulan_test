@@ -1,0 +1,87 @@
+<div mat-dialog-title>
+  <i class="fa fa-shopping-cart meal-card-header"></i>
+  <h4 style="display: inline-block;" class="modal-title meal-card-header"> &nbsp; Cart </h4>
+  <button class="close" (click)="dismiss()">
+    <span aria-hidden="true">×</span>
+  </button>
+</div>
+<mat-dialog-content>
+  <div class="row">
+    <div class="col-md-6" style="overflow-y: scroll; max-height:666px;">
+      <ng-container *ngIf="meals.length === 0">
+        <h1>No meals in your cart</h1>
+      </ng-container>
+      <nb-card *ngFor="let meal of meals" class="meal-cards">
+        <nb-card-header>
+          <strong>{{meal.title}}</strong>
+          <button class="close" (click)="removeMeal(meal)">
+            <span aria-hidden="true">×</span>
+          </button>
+        </nb-card-header>
+        <nb-card-body>
+          <div class="row cart-meal-card-price">
+            <div class="meal-price col-3">{{meal.price | currency: 'USD': 'symbol-narrow'}}</div>
+            <div class="meal-quantity col-6" style="margin-top: -10px;">
+              <button mat-icon-button class="minus-button" (click)="decreaseAmount(meal)" color="primary">
+                <i class="fas fa-minus-square"></i>
+              </button>
+              {{meal.quantity}}
+              <button mat-icon-button class="plus-button" (click)="increaseAmount(meal)" color="primary">
+                <i class="fas fa-plus-square"></i>
+              </button>
+            </div>
+            <div class="meal-total-price col-3">
+              {{meal.price * meal.quantity | currency: 'USD': 'symbol-narrow'}}
+            </div>
+          </div>
+        </nb-card-body>
+
+      </nb-card>
+    </div>
+    <div class="col-md-6">
+      <nb-card class="total-card">
+        <nb-card-header>
+          <span style="text-transform: capitalize">{{user.firstName + ' ' + user.lastName}}</span>
+        </nb-card-header>
+        <nb-card-body>
+          <form [formGroup]="checkoutForm">
+          <label class="label" for="address">Address</label>
+          <input formControlName="address" id="address" nbInput fullWidth placeholder="Please enter you address" value="{{user.address}}">
+          </form>
+        </nb-card-body>
+      </nb-card>
+      <nb-card class="total-card">
+        <nb-card-header>
+          Checkout
+        </nb-card-header>
+        <nb-card-body>
+          <div class="order-cost">
+            <span>Order cost:</span>
+            <span class="total-cost">{{totalPrice.toFixed(2)}}</span>
+          </div>
+          <div class="order-cost">
+            <span>Delivery cost:</span>
+            <span class="total-cost">{{deliveryPrice | currency: 'USD'}}</span>
+          </div>
+          <hr>
+          <div class="order-total-cost">
+            <span class>Total:</span>
+            <span class="total-cost">{{totalPriceWithShip.toFixed(2) | currency: 'USD'}}</span>
+          </div>
+          <br><br>
+          <nb-alert *ngIf="totalPriceWithShip <= 20" status="danger" closable>No products in your Cart</nb-alert>
+        </nb-card-body>
+        <nb-card-footer>
+          <button nbButton [disabled]="noProducts" fullWidth status="success" (click)="productCheckout(meals, totalPrice)">Go to checkout &nbsp; <i class="fa fa-arrow-right"></i></button>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="d-flex justify-content-end align-items-center">
+    <button nbButton (click)="dismiss()" status="danger">Close</button>
+  </div>
+</mat-dialog-actions>
+
+

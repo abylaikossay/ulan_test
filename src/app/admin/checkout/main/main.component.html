@@ -1,0 +1,56 @@
+<section id="section-container">
+<button nbButton status="info" (click)="goBack()">Go Back</button><br><br>
+<nb-card>
+  <nb-card-header>
+    Your order
+  </nb-card-header>
+  <table class="table">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col">Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let meal of meals">
+      <td>{{meal.title}} * <strong>{{meal.quantity}}</strong></td>
+      <td>{{meal.totalPrice | currency: 'USD'}}</td>
+    </tr>
+    <tr>
+      <th scope="col">Subtotal</th>
+      <th scope="col">{{totalPrice | currency: 'USD'}}</th>
+    </tr>
+    <tr>
+      <th scope="col">Delivery</th>
+      <th scope="col">$10.00</th>
+    </tr>
+    <tr>
+      <th scope="col">Total</th>
+      <th scope="col">{{totalPriceWithDelivery | currency: 'USD'}}</th>
+    </tr>
+    </tbody>
+  </table>
+</nb-card>
+  <nb-card>
+    <nb-card-body>
+      <label for="address" class="label">Address</label>
+      <input status="success" id="address" nbInput fullWidth disabled value="{{address}}" placeholder="Address" type="text">
+      <form novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
+        <div class="form-group">
+        <label for="ownerInput" class="label">Input Owner Name</label>
+      <input nbInput fullWidth formControlName="name" id="ownerInput" placeholder="For example:   {{user.firstName + ' ' + user.lastName}}">
+        </div>
+        <div id="card-element" class="field"></div>
+        <button [disabled]="!stripeTest.valid" nbButton fullWidth status="success" type="submit">Pay ${{totalPriceWithDelivery.toFixed(2)}}</button>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</section>
+<hr>
+<!--<form novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">-->
+<!--  <input type="text" formControlName="name" placeholder="Jane Doe">-->
+<!--  <div id="card-element" class="field"></div>-->
+<!--  <button type="submit">-->
+<!--    BUY-->
+<!--  </button>-->
+<!--</form>-->

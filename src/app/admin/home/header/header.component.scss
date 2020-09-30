@@ -1,0 +1,20 @@
+.category {
+  color: darkgrey;
+  font-size: small;
+}
+.company-descr {
+  margin-bottom: auto;
+  //height: 225px;
+}
+nb-card {
+  background-color: #f8f8f3;
+}
+
+@media screen and (min-width: 767px) {
+  .image-header {
+    padding-right: 0;
+  }
+  .header-desrciption {
+    padding-left: 0;
+  }
+}
